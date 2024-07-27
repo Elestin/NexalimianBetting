@@ -1,0 +1,157 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Colosseum Betting Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+        input[type="text"], input[type="number"], input[type="checkbox"] {
+            width: 100%;
+            padding: 8px;
+            margin: 4px 0;
+            box-sizing: border-box;
+        }
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Colosseum Betting Calculator</h1>
+    <table>
+        <tr>
+            <th>Bet Type</th>
+            <th>Description</th>
+            <th>Bet Amount</th>
+            <th>Odds (Fractional)</th>
+            <th>Payout</th>
+            <th>Include in Multi-bet</th>
+        </tr>
+        <tr>
+            <td>Winner Bet</td>
+            <td>Bet on the participant or team to win</td>
+            <td><input type="number" id="betAmount1" placeholder="Enter bet amount"></td>
+            <td><input type="text" id="odds1" value="2/1"></td>
+            <td><span id="payout1"></span></td>
+            <td><input type="checkbox" id="include1"></td>
+        </tr>
+        <tr>
+            <td>First Blood</td>
+            <td>Bet on who lands the first hit</td>
+            <td><input type="number" id="betAmount2" placeholder="Enter bet amount"></td>
+            <td><input type="text" id="odds2" value="3/1"></td>
+            <td><span id="payout2"></span></td>
+            <td><input type="checkbox" id="include2"></td>
+        </tr>
+        <tr>
+            <td>Death or Alive</td>
+            <td>Bet on whether a participant will die or survive</td>
+            <td><input type="number" id="betAmount3" placeholder="Enter bet amount"></td>
+            <td><input type="text" id="odds3" value="4/1"></td>
+            <td><span id="payout3"></span></td>
+            <td><input type="checkbox" id="include3"></td>
+        </tr>
+        <tr>
+            <td>Duration Bet</td>
+            <td>Bet on match duration</td>
+            <td><input type="number" id="betAmount4" placeholder="Enter bet amount"></td>
+            <td><input type="text" id="odds4" value="5/1"></td>
+            <td><span id="payout4"></span></td>
+            <td><input type="checkbox" id="include4"></td>
+        </tr>
+        <tr>
+            <td>Specific Outcome</td>
+            <td>Bet on a specific event</td>
+            <td><input type="number" id="betAmount5" placeholder="Enter bet amount"></td>
+            <td><input type="text" id="odds5" value="6/1"></td>
+            <td><span id="payout5"></span></td>
+            <td><input type="checkbox" id="include5"></td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align: right;"><strong>Total Bet Amount (for multiple bets):</strong></td>
+            <td><input type="number" id="totalBetAmount" placeholder="Enter total bet amount"></td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align: right;"><strong>Skill Check Roll:</strong></td>
+            <td><input type="number" id="skillCheck" placeholder="Enter roll (1-20)"></td>
+        </tr>
+        <tr>
+            <td colspan="5" style="text-align: right;"><strong>Total Payout:</strong></td>
+            <td><span id="totalPayout"></span></td>
+        </tr>
+    </table>
+    <input type="button" value="Calculate Payouts" onclick="calculatePayouts()">
+
+    <script>
+        function calculatePayouts() {
+            let totalPayout = 1;  // Start with 1 for multiplicative calculation
+            let totalBetAmount = parseFloat(document.getElementById('totalBetAmount').value) || 0;
+            let individualPayouts = 0;
+            let includedBets = 0;
+            let totalBetUsed = false;
+
+            for (let i = 1; i <= 5; i++) {
+                let betAmount = parseFloat(document.getElementById('betAmount' + i).value);
+                let odds = document.getElementById('odds' + i).value.split('/');
+                let payout = 0;
+                if (document.getElementById('include' + i).checked) {
+                    if (isNaN(betAmount)) {
+                        betAmount = totalBetAmount;
+                        totalBetUsed = true;
+                    }
+                    payout = (betAmount * (parseFloat(odds[0]) / parseFloat(odds[1]))).toFixed(2);
+                    totalPayout *= parseFloat(odds[0]) / parseFloat(odds[1]);
+                    includedBets += 1;
+                }
+                document.getElementById('payout' + i).innerText = isNaN(payout) ? '' : payout;
+                individualPayouts += isNaN(payout) ? 0 : parseFloat(payout);
+            }
+
+            if (totalBetUsed && totalBetAmount > 0 && includedBets > 0) {
+                totalPayout = (totalBetAmount * totalPayout).toFixed(2);
+            } else {
+                totalPayout = individualPayouts.toFixed(2);
+            }
+
+            // Adjust payout based on skill check roll
+            let skillCheck = parseInt(document.getElementById('skillCheck').value);
+            if (!isNaN(skillCheck)) {
+                let adjustmentFactor = 1;
+                if (skillCheck <= 10) {
+                    adjustmentFactor -= (10 - skillCheck) * 0.05;
+                } else if (skillCheck > 15) {
+                    adjustmentFactor += (skillCheck - 15) * 0.05;
+                }
+                totalPayout *= adjustmentFactor;
+            }
+
+            document.getElementById('totalPayout').innerText = isNaN(totalPayout) ? '' : totalPayout.toFixed(2);
+        }
+    </script>
+</body>
+</html>
