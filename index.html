@@ -43,11 +43,11 @@
             background-color: #d4af37;
             color: white;
         }
-        th, td {
-            white-space: nowrap;
-        }
         .description-column {
-            white-space: normal;
+            width: 35%;
+        }
+        .bet-amount-column, .odds-column, .payout-column, .include-column, .action-column {
+            width: 10%;
         }
         input[type="text"], input[type="number"], input[type="checkbox"], select {
             width: calc(100% - 16px);
@@ -114,12 +114,12 @@
             <thead>
                 <tr>
                     <th>Bet Type</th>
-                    <th>Description</th>
-                    <th>Bet Amount</th>
-                    <th>Odds (Fractional)</th>
-                    <th>Payout</th>
-                    <th>Include in Multi-bet</th>
-                    <th>Action</th>
+                    <th class="description-column">Description</th>
+                    <th class="bet-amount-column">Bet Amount</th>
+                    <th class="odds-column">Odds (Fractional)</th>
+                    <th class="payout-column">Payout</th>
+                    <th class="include-column">Include in Multi-bet</th>
+                    <th class="action-column">Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -162,11 +162,11 @@
             row.innerHTML = `
                 <td>${betType.charAt(0).toUpperCase() + betType.slice(1)}</td>
                 <td class="description-column">${betDescriptions[betType]}</td>
-                <td><input type="number" class="betAmount" placeholder="Enter bet amount"></td>
-                <td><input type="text" class="odds" value="2/1"></td>
-                <td><span class="payout"></span></td>
-                <td><input type="checkbox" class="include"></td>
-                <td><button class="remove-btn" onclick="removeBet(this)">Remove</button></td>
+                <td class="bet-amount-column"><input type="number" class="betAmount" placeholder="Enter bet amount"></td>
+                <td class="odds-column"><input type="text" class="odds" value="2/1"></td>
+                <td class="payout-column"><span class="payout"></span></td>
+                <td class="include-column"><input type="checkbox" class="include"></td>
+                <td class="action-column"><button class="remove-btn" onclick="removeBet(this)">Remove</button></td>
             `;
 
             if (betType === 'deathOrAlive') {
