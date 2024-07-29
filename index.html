@@ -189,11 +189,11 @@
             let individualPayouts = 0;
             let includedBets = 0;
             let totalBetUsed = false;
-            let receiptContent = `Fantasy Betting Office\n\nBettor: ${document.getElementById('bettorName').value}\n\n`;
+            let receiptContent = `# Fantasy Betting Office\n\n### Bettor: ${document.getElementById('bettorName').value}\n\n`;
 
             receiptContent += `
-| Bet Type | Description | Bet Amount | Odds (Fractional) | Payout |
-|:---------|:------------|:-----------|:------------------|:-------:|
+| Bet Type | Description | Bet Amount | Payout |
+|:---------|:------------|:-----------|:-------:|
 `;
 
             const rows = document.querySelectorAll('#betTable tbody tr');
@@ -222,7 +222,7 @@
                 payoutCell.innerText = isNaN(payout) ? '' : payout;
                 individualPayouts += isNaN(payout) ? 0 : parseFloat(payout);
 
-                receiptContent += `| ${betType} | ${betDescription} | ${betAmount} | ${row.querySelector('.odds').value} | ${payout} |\n`;
+                receiptContent += `| ${betType} |  | ${betAmount} | ${payout} |\n`;
 
                 if (betType === 'Death or Alive' && nameInput && nameInput.value) {
                     receiptContent += `| Target: ${nameInput.value} |\n`;
@@ -250,18 +250,14 @@
 
             document.getElementById('totalPayout').innerText = isNaN(totalPayout) ? '' : totalPayout.toFixed(2);
 
-            receiptContent += `\nTotal Payout: ${totalPayout.toFixed(2)}\n`;
+            receiptContent += `\n## Total Payout: ${totalPayout.toFixed(2)}\n`;
 
             document.getElementById('receipt').innerText = receiptContent;
         }
 
         function copyToClipboard() {
             const receipt = document.getElementById('receipt').innerText;
-            const markdownReceipt = `
-\`\`\`
-${receipt}
-\`\`\`
-            `;
+            const markdownReceipt = `${receipt}`;
             navigator.clipboard.writeText(markdownReceipt).then(() => {
                 alert('Receipt copied to clipboard in markdown format!');
             }, (err) => {
