@@ -41,6 +41,12 @@
             background-color: #d4af37;
             color: white;
         }
+        th, td {
+            white-space: nowrap;
+        }
+        .description-column {
+            white-space: normal;
+        }
         input[type="text"], input[type="number"], input[type="checkbox"], select {
             width: 100%;
             padding: 8px;
@@ -77,6 +83,10 @@
         .remove-btn:hover {
             background-color: #d32f2f;
         }
+        .homebrewery-receipt {
+            width: 400px;
+            margin: auto;
+        }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 </head>
@@ -100,7 +110,7 @@
             <thead>
                 <tr>
                     <th>Bet Type</th>
-                    <th>Description</th>
+                    <th class="description-column">Description</th>
                     <th>Bet Amount</th>
                     <th>Odds (Fractional)</th>
                     <th>Payout</th>
@@ -126,7 +136,7 @@
             </tr>
         </table>
         <input type="button" value="Calculate Payouts" onclick="calculatePayouts()">
-        <div id="receipt" class="receipt"></div>
+        <div id="receipt" class="receipt homebrewery-receipt"></div>
     </div>
 
     <script>
@@ -147,7 +157,7 @@
 
             row.innerHTML = `
                 <td>${betType.charAt(0).toUpperCase() + betType.slice(1)}</td>
-                <td>${betDescriptions[betType]}</td>
+                <td class="description-column">${betDescriptions[betType]}</td>
                 <td><input type="number" class="betAmount" placeholder="Enter bet amount"></td>
                 <td><input type="text" class="odds" value="2/1"></td>
                 <td><span class="payout"></span></td>
