@@ -160,7 +160,7 @@
             const rows = document.querySelectorAll('#betTable tbody tr');
 
             rows.forEach((row, index) => {
-                const betAmount = parseFloat(row.querySelector('.betAmount').value);
+                let betAmount = parseFloat(row.querySelector('.betAmount').value);
                 const odds = row.querySelector('.odds').value.split('/');
                 const include = row.querySelector('.include').checked;
                 const payoutCell = row.querySelector('.payout');
@@ -168,15 +168,15 @@
                 const betDescription = row.cells[1].innerText;
                 const nameInput = row.querySelector('input[type="text"]');
 
+                if (isNaN(betAmount) && totalBetAmount > 0) {
+                    betAmount = totalBetAmount;
+                    totalBetUsed = true;
+                }
+
                 let payout = 0;
 
                 if (include) {
-                    let amount = betAmount;
-                    if (isNaN(amount)) {
-                        amount = totalBetAmount;
-                        totalBetUsed = true;
-                    }
-                    payout = (amount * (parseFloat(odds[0]) / parseFloat(odds[1]))).toFixed(2);
+                    payout = (betAmount * (parseFloat(odds[0]) / parseFloat(odds[1]))).toFixed(2);
                     totalPayout *= parseFloat(odds[0]) / parseFloat(odds[1]);
                     includedBets += 1;
                 }
