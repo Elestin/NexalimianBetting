@@ -97,6 +97,19 @@
 <body>
     <div class="container">
         <h1>Colosseum Betting Calculator</h1>
+        <label for="bettingOffice">Select Betting Office:</label>
+        <select id="bettingOffice">
+            <option value="Fortune's Favor">Fortune's Favor</option>
+            <option value="Dragon's Wager">Dragon's Wager</option>
+            <option value="Silver Stake Betting Co.">Silver Stake Betting Co.</option>
+            <option value="Gambler's Guild">Gambler's Guild</option>
+            <option value="Wyrm's Luck">Wyrm's Luck</option>
+            <option value="Champion's Bet">Champion's Bet</option>
+            <option value="High Roller Havens">High Roller Havens</option>
+            <option value="Mystic Odds">Mystic Odds</option>
+            <option value="Golden Griffin Gambling">Golden Griffin Gambling</option>
+            <option value="Victory Ventures Betting">Victory Ventures Betting</option>
+        </select>
         <label for="bettorName">Name of Bettor:</label>
         <input type="text" id="bettorName" placeholder="Enter your name">
         <label for="betType">Select Bet Type:</label>
@@ -189,7 +202,7 @@
             let individualPayouts = 0;
             let includedBets = 0;
             let totalBetUsed = false;
-            let receiptContent = `# Fantasy Betting Office\n\n### Bettor: ${document.getElementById('bettorName').value}\n\n`;
+            let receiptContent = `# ${document.getElementById('bettingOffice').value}\n\n### Bettor: ${document.getElementById('bettorName').value}\n\n`;
 
             receiptContent += `
 | Bet Type |  | Bet Amount | Payout |
