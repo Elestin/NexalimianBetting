@@ -10,10 +10,9 @@
             margin: 20px;
             background: #f4efe1;
             color: #333;
-            font-size: 1.2em;
         }
         .container {
-            max-width: 960px;
+            max-width: 960px; /* Increased from 800px to 960px for 20% wider */
             margin: auto;
             border: 2px solid #d4af37;
             padding: 20px;
@@ -103,6 +102,10 @@
         }
         .copy-btn:hover {
             background-color: #45a049;
+        }
+        .markdown {
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
@@ -202,7 +205,7 @@
             let individualPayouts = 0;
             let includedBets = 0;
             let totalBetUsed = false;
-            let receiptContent = `Fantasy Betting Office\n\nBettor: ${document.getElementById('bettorName').value}\n\n`;
+            let receiptContent = `# Fantasy Betting Office\n\n**Bettor:** ${document.getElementById('bettorName').value}\n\n`;
 
             const rows = document.querySelectorAll('#betTable tbody tr');
 
@@ -230,10 +233,10 @@
                 payoutCell.innerText = isNaN(payout) ? '' : payout;
                 individualPayouts += isNaN(payout) ? 0 : parseFloat(payout);
 
-                receiptContent += `Bet Type: ${betType}\nDescription: ${betDescription}\nBet Amount: ${betAmount}\nOdds: ${row.querySelector('.odds').value}\nPayout: ${payout}\n\n`;
+                receiptContent += `**Bet Type:** ${betType}\n**Description:** ${betDescription}\n**Bet Amount:** ${betAmount}\n**Odds:** ${row.querySelector('.odds').value}\n**Payout:** ${payout}\n\n`;
 
                 if (betType === 'Death or Alive' && nameInput && nameInput.value) {
-                    receiptContent += `Target: ${nameInput.value}\n`;
+                    receiptContent += `**Target:** ${nameInput.value}\n`;
                 }
             });
 
@@ -258,18 +261,20 @@
 
             document.getElementById('totalPayout').innerText = isNaN(totalPayout) ? '' : totalPayout.toFixed(2);
 
-            receiptContent += `Total Payout: ${totalPayout.toFixed(2)}\n`;
+            receiptContent += `**Total Payout:** ${totalPayout.toFixed(2)}\n`;
 
             document.getElementById('receipt').innerText = receiptContent;
         }
 
         function copyToClipboard() {
             const receiptContent = document.getElementById('receipt').innerText;
-            navigator.clipboard.writeText(receiptContent).then(() => {
-                alert('Receipt copied to clipboard!');
-            }).catch(err => {
-                console.error('Error copying text: ', err);
-            });
+            const el = document.createElement('textarea');
+            el.value = receiptContent;
+            document.body.appendChild(el);
+            el.select();
+            document.execCommand('copy');
+            document.body.removeChild(el);
+            alert('Receipt copied to clipboard!');
         }
     </script>
 </body>
