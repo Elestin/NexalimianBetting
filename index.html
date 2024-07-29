@@ -49,6 +49,16 @@
             background-color: #f9f9f9;
             font-family: 'Courier New', Courier, monospace;
         }
+        .remove-btn {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .remove-btn:hover {
+            background-color: #d32f2f;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +86,7 @@
                     <th>Odds (Fractional)</th>
                     <th>Payout</th>
                     <th>Include in Multi-bet</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -122,6 +133,7 @@
                 <td><input type="text" class="odds" value="2/1"></td>
                 <td><span class="payout"></span></td>
                 <td><input type="checkbox" class="include"></td>
+                <td><button class="remove-btn" onclick="removeBet(this)">Remove</button></td>
             `;
 
             if (betType === 'deathOrAlive') {
@@ -130,6 +142,11 @@
                 nameInput.placeholder = 'Enter name';
                 row.cells[1].appendChild(nameInput);
             }
+        }
+
+        function removeBet(button) {
+            const row = button.parentNode.parentNode;
+            row.parentNode.removeChild(row);
         }
 
         function calculatePayouts() {
@@ -166,7 +183,7 @@
                 payoutCell.innerText = isNaN(payout) ? '' : payout;
                 individualPayouts += isNaN(payout) ? 0 : parseFloat(payout);
 
-                receiptContent += `Bet Type: ${betType}\nDescription: ${betDescription}\nBet Amount: ${amount}\nOdds: ${row.querySelector('.odds').value}\nPayout: ${payout}\n\n`;
+                receiptContent += `Bet Type: ${betType}\nDescription: ${betDescription}\nBet Amount: ${betAmount}\nOdds: ${row.querySelector('.odds').value}\nPayout: ${payout}\n\n`;
 
                 if (betType === 'Death or Alive' && nameInput && nameInput.value) {
                     receiptContent += `Target: ${nameInput.value}\n`;
