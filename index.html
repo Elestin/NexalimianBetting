@@ -10,9 +10,10 @@
             margin: 20px;
             background: #f4efe1;
             color: #333;
+            font-size: 1.2em;
         }
         .container {
-            max-width: 800px;
+            max-width: 960px;
             margin: auto;
             border: 2px solid #d4af37;
             padding: 20px;
@@ -87,9 +88,21 @@
             background-color: #d32f2f;
         }
         .homebrewery-receipt {
-            width: 400px;
-            margin: auto;
+            width: 100%;
             text-align: left;
+        }
+        .copy-btn {
+            width: calc(100% - 16px);
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: 'Cinzel Decorative', cursive;
+            margin-top: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #45a049;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
@@ -141,6 +154,7 @@
         </table>
         <input type="button" value="Calculate Payouts" onclick="calculatePayouts()">
         <div id="receipt" class="receipt homebrewery-receipt"></div>
+        <input type="button" value="Copy to Clipboard" class="copy-btn" onclick="copyToClipboard()">
     </div>
 
     <script>
@@ -247,6 +261,15 @@
             receiptContent += `Total Payout: ${totalPayout.toFixed(2)}\n`;
 
             document.getElementById('receipt').innerText = receiptContent;
+        }
+
+        function copyToClipboard() {
+            const receiptContent = document.getElementById('receipt').innerText;
+            navigator.clipboard.writeText(receiptContent).then(() => {
+                alert('Receipt copied to clipboard!');
+            }).catch(err => {
+                console.error('Error copying text: ', err);
+            });
         }
     </script>
 </body>
