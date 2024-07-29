@@ -6,16 +6,31 @@
     <title>Colosseum Betting Calculator</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Cinzel', serif;
             margin: 20px;
+            background: #f4efe1;
+            color: #333;
         }
         .container {
             max-width: 800px;
             margin: auto;
+            border: 2px solid #d4af37;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #d4af37;
+            font-family: 'Cinzel Decorative', cursive;
+        }
+        label {
+            font-weight: bold;
         }
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
         }
         th, td {
             padding: 8px 12px;
@@ -23,30 +38,33 @@
             text-align: left;
         }
         th {
-            background-color: #f4f4f4;
+            background-color: #d4af37;
+            color: white;
         }
         input[type="text"], input[type="number"], input[type="checkbox"], select {
             width: 100%;
             padding: 8px;
             margin: 4px 0;
             box-sizing: border-box;
+            font-family: 'Cinzel', serif;
         }
         input[type="button"] {
             width: 100%;
             padding: 10px;
-            background-color: #4CAF50;
+            background-color: #d4af37;
             color: white;
             border: none;
             cursor: pointer;
+            font-family: 'Cinzel Decorative', cursive;
         }
         input[type="button"]:hover {
-            background-color: #45a049;
+            background-color: #c0a02b;
         }
         .receipt {
             margin-top: 20px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            background-color: #f9f9f9;
+            padding: 20px;
+            border: 2px solid #d4af37;
+            background-color: #f4efe1;
             font-family: 'Courier New', Courier, monospace;
         }
         .remove-btn {
@@ -60,6 +78,7 @@
             background-color: #d32f2f;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -103,7 +122,7 @@
             </tr>
             <tr>
                 <td colspan="5" style="text-align: right;"><strong>Total Payout:</strong></td>
-                <td><span id="totalPayout"></span> <span id="bonusPercentage"></span></td>
+                <td><span id="totalPayout"></span></td>
             </tr>
         </table>
         <input type="button" value="Calculate Payouts" onclick="calculatePayouts()">
@@ -198,22 +217,20 @@
 
             // Adjust payout based on skill check roll
             let skillCheck = parseInt(document.getElementById('skillCheck').value);
-            let bonusPercentage = 0;
+            let adjustmentFactor = 1;
             if (!isNaN(skillCheck)) {
-                let adjustmentFactor = 1;
                 if (skillCheck <= 10) {
                     adjustmentFactor -= (10 - skillCheck) * 0.05;
                 } else if (skillCheck > 15) {
                     adjustmentFactor += (skillCheck - 15) * 0.05;
                 }
-                bonusPercentage = ((adjustmentFactor - 1) * 100).toFixed(2);
-                totalPayout *= adjustmentFactor;
             }
 
-            document.getElementById('totalPayout').innerText = isNaN(totalPayout) ? '' : totalPayout.toFixed(2);
-            document.getElementById('bonusPercentage').innerText = ` (${bonusPercentage}% bonus)`;
+            totalPayout *= adjustmentFactor;
 
-            receiptContent += `Total Payout: ${totalPayout.toFixed(2)} (${bonusPercentage}% bonus)\n`;
+            document.getElementById('totalPayout').innerText = isNaN(totalPayout) ? '' : totalPayout.toFixed(2);
+
+            receiptContent += `Total Payout: ${totalPayout.toFixed(2)}\n`;
 
             document.getElementById('receipt').innerText = receiptContent;
         }
