@@ -12,7 +12,7 @@
             color: #333;
         }
         .container {
-            max-width: 960px; /* Increased from 800px to 960px for 20% wider */
+            max-width: 960px; /* Increased width by 20% */
             margin: auto;
             border: 2px solid #d4af37;
             padding: 20px;
@@ -87,25 +87,9 @@
             background-color: #d32f2f;
         }
         .homebrewery-receipt {
-            width: 100%;
+            width: 400px;
+            margin: auto;
             text-align: left;
-        }
-        .copy-btn {
-            width: calc(100% - 16px);
-            padding: 10px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-family: 'Cinzel Decorative', cursive;
-            margin-top: 10px;
-        }
-        .copy-btn:hover {
-            background-color: #45a049;
-        }
-        .markdown {
-            font-family: 'Courier New', Courier, monospace;
-            white-space: pre;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
@@ -157,7 +141,7 @@
         </table>
         <input type="button" value="Calculate Payouts" onclick="calculatePayouts()">
         <div id="receipt" class="receipt homebrewery-receipt"></div>
-        <input type="button" value="Copy to Clipboard" class="copy-btn" onclick="copyToClipboard()">
+        <input type="button" value="Copy to Clipboard" onclick="copyToClipboard()">
     </div>
 
     <script>
@@ -205,7 +189,12 @@
             let individualPayouts = 0;
             let includedBets = 0;
             let totalBetUsed = false;
-            let receiptContent = `# Fantasy Betting Office\n\n**Bettor:** ${document.getElementById('bettorName').value}\n\n`;
+            let receiptContent = `Fantasy Betting Office\n\nBettor: ${document.getElementById('bettorName').value}\n\n`;
+
+            receiptContent += `
+| Bet Type | Description | Bet Amount | Odds (Fractional) | Payout |
+|:---------|:------------|:-----------|:------------------|:-------:|
+`;
 
             const rows = document.querySelectorAll('#betTable tbody tr');
 
@@ -233,10 +222,10 @@
                 payoutCell.innerText = isNaN(payout) ? '' : payout;
                 individualPayouts += isNaN(payout) ? 0 : parseFloat(payout);
 
-                receiptContent += `**Bet Type:** ${betType}\n**Description:** ${betDescription}\n**Bet Amount:** ${betAmount}\n**Odds:** ${row.querySelector('.odds').value}\n**Payout:** ${payout}\n\n`;
+                receiptContent += `| ${betType} | ${betDescription} | ${betAmount} | ${row.querySelector('.odds').value} | ${payout} |\n`;
 
                 if (betType === 'Death or Alive' && nameInput && nameInput.value) {
-                    receiptContent += `**Target:** ${nameInput.value}\n`;
+                    receiptContent += `| Target: ${nameInput.value} |\n`;
                 }
             });
 
@@ -261,20 +250,23 @@
 
             document.getElementById('totalPayout').innerText = isNaN(totalPayout) ? '' : totalPayout.toFixed(2);
 
-            receiptContent += `**Total Payout:** ${totalPayout.toFixed(2)}\n`;
+            receiptContent += `\nTotal Payout: ${totalPayout.toFixed(2)}\n`;
 
             document.getElementById('receipt').innerText = receiptContent;
         }
 
         function copyToClipboard() {
-            const receiptContent = document.getElementById('receipt').innerText;
-            const el = document.createElement('textarea');
-            el.value = receiptContent;
-            document.body.appendChild(el);
-            el.select();
-            document.execCommand('copy');
-            document.body.removeChild(el);
-            alert('Receipt copied to clipboard!');
+            const receipt = document.getElementById('receipt').innerText;
+            const markdownReceipt = `
+\`\`\`
+${receipt}
+\`\`\`
+            `;
+            navigator.clipboard.writeText(markdownReceipt).then(() => {
+                alert('Receipt copied to clipboard in markdown format!');
+            }, (err) => {
+                alert('Failed to copy receipt: ', err);
+            });
         }
     </script>
 </body>
