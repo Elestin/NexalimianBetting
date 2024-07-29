@@ -26,6 +26,8 @@
         }
         label {
             font-weight: bold;
+            display: block;
+            margin-top: 10px;
         }
         table {
             width: 100%;
@@ -48,20 +50,21 @@
             white-space: normal;
         }
         input[type="text"], input[type="number"], input[type="checkbox"], select {
-            width: 100%;
+            width: calc(100% - 16px);
             padding: 8px;
             margin: 4px 0;
             box-sizing: border-box;
             font-family: 'Cinzel', serif;
         }
         input[type="button"] {
-            width: 100%;
+            width: calc(100% - 16px);
             padding: 10px;
             background-color: #d4af37;
             color: white;
             border: none;
             cursor: pointer;
             font-family: 'Cinzel Decorative', cursive;
+            margin: 4px 0;
         }
         input[type="button"]:hover {
             background-color: #c0a02b;
